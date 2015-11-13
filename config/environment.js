@@ -4,7 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'emberjs-indexeddb-withoutsync-example',
     environment: environment,
-    baseURL: '/',
+    baseURL: '/emberjs-indexeddb-withoutsync-example',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -40,7 +40,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.baseURL = '/emberjs-indexeddb-withoutsync-example/';
   }
 
   return ENV;
