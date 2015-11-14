@@ -39,6 +39,8 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
+  ENV.local_couch = 'weatheranalytics';
+
   if (environment === 'production') {
     ENV.baseURL = '/emberjs-indexeddb-withoutsync-example/';
   }
