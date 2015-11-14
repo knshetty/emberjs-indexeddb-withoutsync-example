@@ -44,6 +44,35 @@ Make use of the many generators for code, try `ember help generate` for more det
 * `ember build` (development)
 * `ember build --environment production` (production)
 
+## How To Bootstrapped This Project From Scratch
+1. Create an ember-cli project
+`$ ember new emberjs-indexeddb-withoutsync-example`
+`$ cd emberjs-indexeddb-withoutsync-example/`
+`$ npm install && bower install`
+
+2. Install build toolchain
+`$ npm install --save-dev broccoli-merge-trees`
+`$ npm install --save-dev broccoli-static-compiler`
+`$ npm install --save-dev ember-cli-coffeescript`
+
+3. Manage your dependencies
+`$ bower install bootstrap --save`
+`$ bower install Snap.svg --save` (https://github.com/adobe-webplatform/Snap.svg)
+
+4. Setup project build env. using 'ember-cli-build.js' file by include these depedencies:
+* 'Bootstrap3' UI framework's dependencies
+* 'Snap.svg' - SVG graphics library dependency
+Now, build this project:
+`$ ember build`
+
+5. Install ember-cli modules
+`$ npm install --save-dev ember-idx-forms` (Info: http://indexiatech.github.io/ember-forms/overview)
+`$ npm install --save-dev ember-idx-modal` (http://indexiatech.github.io/ember-components)
+
+6. Conduct a basic smoke test
+`$ ember server`
+Visit the running app at http://0.0.0.0:4200
+
 ## Further Reading / Useful Links
 
 * [ember.js](http://emberjs.com/)
@@ -52,9 +81,8 @@ Make use of the many generators for code, try `ember help generate` for more det
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
 * Sources of inspiration for this project:
-        * https://github.com/broerse/ember-cli-blog
-        * https://github.com/nolanlawson/ember-pouch
-        * http://www.sitepoint.com/building-offline-first-app-pouchdb/
-        * http://pouchdb.com/guides/
-
-
+  * http://discuss.emberjs.com/t/is-there-plan-to-have-ember-data-cache-with-a-persistent-in-browser-store/6330/4
+  * https://github.com/broerse/ember-cli-blog
+  * https://github.com/nolanlawson/ember-pouch
+  * http://www.sitepoint.com/building-offline-first-app-pouchdb/
+  * http://pouchdb.com/guides/
