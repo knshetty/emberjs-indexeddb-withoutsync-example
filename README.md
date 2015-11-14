@@ -45,33 +45,36 @@ Make use of the many generators for code, try `ember help generate` for more det
 * `ember build --environment production` (production)
 
 ## How To Bootstrapped This Project From Scratch
-1. Create an ember-cli project
-`$ ember new emberjs-indexeddb-withoutsync-example`
-`$ cd emberjs-indexeddb-withoutsync-example/`
-`$ npm install && bower install`
 
-2. Install build toolchain
-`$ npm install --save-dev broccoli-merge-trees`
-`$ npm install --save-dev broccoli-static-compiler`
-`$ npm install --save-dev ember-cli-coffeescript`
+        1.  Create an ember-cli project
+                `$ ember new emberjs-indexeddb-withoutsync-example`
+                `$ cd emberjs-indexeddb-withoutsync-example/`
+                `$ npm install && bower install`
 
-3. Manage your dependencies
-`$ bower install bootstrap --save`
-`$ bower install Snap.svg --save` (https://github.com/adobe-webplatform/Snap.svg)
+        2.   Install build toolchain
+                `$ npm install --save-dev broccoli-merge-trees`
+                `$ npm install --save-dev broccoli-static-compiler`
+                `$ npm install --save-dev ember-cli-coffeescript`
 
-4. Setup project build env. using 'ember-cli-build.js' file by include these depedencies:
-* 'Bootstrap3' UI framework's dependencies
-* 'Snap.svg' - SVG graphics library dependency
-Now, build this project:
-`$ ember build`
+        3. Manage dependencies
+                `$ bower install bootstrap --save`
+                `$ bower install Snap.svg --save` (https://github.com/adobe-webplatform/Snap.svg)
 
-5. Install ember-cli modules
-`$ npm install --save-dev ember-idx-forms` (Info: http://indexiatech.github.io/ember-forms/overview)
-`$ npm install --save-dev ember-idx-modal` (http://indexiatech.github.io/ember-components)
+        4. Setup project build env. using 'ember-cli-build.js' file by include below depedencies
+                * 'Bootstrap3' UI framework's dependencies
+                * 'Snap.svg' - SVG graphics library dependency
 
-6. Conduct a basic smoke test
-`$ ember server`
-Visit the running app at http://0.0.0.0:4200
+                Now, build this project:
+                `$ ember build`
+
+        5. Install ember-cli modules
+                `$ npm install --save-dev ember-idx-forms` (Info: http://indexiatech.github.io/ember-forms/overview)
+                `$ npm install --save-dev ember-idx-modal` (http://indexiatech.github.io/ember-components)
+
+        6. Conduct a basic smoke test
+                `$ ember server`
+                Visit the running app at http://0.0.0.0:4200
+
 
 ## Further Reading / Useful Links
 
