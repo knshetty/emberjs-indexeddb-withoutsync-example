@@ -9,6 +9,12 @@ ApplicationAdapter = Adapter.extend(
 
     db: db
 
+    # --- Ember Data 2.0 Reload behavior ---
+    shouldReloadRecord: -> return true
+    shouldReloadAll: -> return true
+    shouldBackgroundReloadRecord: -> return true
+    shouldBackgroundReloadAll: -> return true
+
 )
 
 `export default ApplicationAdapter`
