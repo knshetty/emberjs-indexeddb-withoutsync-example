@@ -3,7 +3,7 @@
 
 Humiditythreshold = Model.extend {
 
-    high: DS.attr('number', {defaultValue: 79.5})
+    high: DS.attr('number', {defaultValue: 79})
 
     low: DS.attr('number', {defaultValue: 60})
 

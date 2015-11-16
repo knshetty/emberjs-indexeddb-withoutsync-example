@@ -3,7 +3,7 @@
 
 Downtrendanalyser = Model.extend {
 
-    qualifierCount: DS.attr('number', {defaultValue: 79.5})
+    qualifierCount: DS.attr('number', {defaultValue: 3})
 
     unit: DS.attr('string', {defaultValue: 'hours'})
 

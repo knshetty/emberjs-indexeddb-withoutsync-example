@@ -3,9 +3,9 @@
 
 Temperaturetrigger = Model.extend {
 
-    default: DS.attr('number', {defaultValue: 5})
+    default: DS.attr('number', {defaultValue: 4})
 
-    onHighHumidity: DS.attr('number', {defaultValue: 4})
+    onHighHumidity: DS.attr('number', {defaultValue: 5})
 
     unit: DS.attr('string', {defaultValue: '°C'})
 
