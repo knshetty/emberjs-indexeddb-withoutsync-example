@@ -25,16 +25,16 @@ ApplicationRoute = Ember.Route.extend(
         )
 
     setupController: (controller, model) ->
-        # --- Initialise & populate records when the application is run for the first-time ---
+        # --- On application being run for the first-time: Initialise & populate records ---
+        if model.downtrendanalyser.content.length is 0
+            downtrendanalyser = @store.createRecord('downtrendanalyser')
+            downtrendanalyser.save()
         if model.temperaturetrigger.content.length is 0
             temperaturetrigger = @store.createRecord('temperaturetrigger')
             temperaturetrigger.save()
         if model.humiditythreshold.content.length is 0
             humiditythreshold = @store.createRecord('humiditythreshold')
             humiditythreshold.save()
-        if model.downtrendanalyser.content.length is 0
-            downtrendanalyser = @store.createRecord('downtrendanalyser')
-            downtrendanalyser.save()
 
         controller.set('model', model)
 
@@ -45,13 +45,13 @@ ApplicationRoute = Ember.Route.extend(
         updateModel: ->
             @refresh()
 
-        updateTemperatureTrigger: ->
+        saveTemperatureTrigger: ->
             @modelFor('temperaturetrigger').save()
 
-        updateHumidityThreshold: ->
+        saveHumidityThreshold: ->
             @modelFor('humiditythreshold').save()
 
-        updateDownTrendAnalyser: ->
+        saveDownTrendAnalyser: ->
             @modelFor('downtrendanalyser').save()
 )
 

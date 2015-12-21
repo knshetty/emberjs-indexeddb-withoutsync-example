@@ -9,11 +9,25 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
     # ----------------
     _extractedAllWeatherAnalyticsSettings: false
 
+    _boxAndpoleColour_Default: '#808080'
+    _boxAndpoleOpacity_Default: 1.0
+    _boxAndpoleColour_OnChange: '#bc2122'
+    _boxAndpoleOpacity_OnChange: 0.75
+
+    _boxNpole_QualifierCountDTA_SvgObj: null
+    _savebutton_QualifierCountDTA_SvgObj: null
+
     _default_TemperatureTrigger_SvgObj: null
     _onHighHumidity_TemperatureTrigger_SvgObj: null
+    _boxNpole_TemperatureTrigger_SvgObj: null
+    _savebutton_TemperatureTrigger_SvgObj: null
 
     _high_HumidityThershold_SvgObj: null
+    _boxNpole_High_HumidityThershold_SvgObj: null
+    _savebutton_High_HumidityThershold_SvgObj: null
     _low_HumidityThershold_SvgObj: null
+    _boxNpole_Low_HumidityThershold_SvgObj: null
+    _savebutton_Low_HumidityThershold_SvgObj: null
 
     dtaQualifierCount: null
     dtaUnitOfQualifierCount: null
@@ -41,7 +55,7 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
         Snap.load('assets/weather.svg', ((f) ->
 
             # Extract data from model
-            @_extractWeatherAnalyticsSettings()
+            @_extractWeatherAnalyticsSettingsDataset()
 
             arrowButtonColour_Default = '#808080'
 
@@ -53,12 +67,15 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             unit_QualifierCount_DTA = f.select('#unit_qualifier_count_dta')
             upArrow_QualifierCount_DTA = f.select('#uparrow_qualifier_count_dta')
             downArrow_QualifierCount_DTA = f.select('#downarrow_qualifier_count_dta')
+            boxNpole_QualifierCount_DTA = f.select('#boxNpole_qualifier_count_dta')
+            savebutton_QualifierCount_DTA = f.select('#savebutton_qualifier_count_dta')
 
             # Initialise digit & unit
             qualifierCount_DTA.node.textContent = @dtaQualifierCount
             unit_QualifierCount_DTA.node.textContent = @dtaUnitOfQualifierCount
 
             # Digit-Increment handler
+            upArrow_QualifierCount_DTA.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             upArrow_QualifierCount_DTA.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             upArrow_QualifierCount_DTA.mouseup( ( ->
                 upArrow_QualifierCount_DTA.attr('fill', arrowButtonColour_Default) # UX initative
@@ -67,12 +84,35 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             ).bind(@))
 
             # Digit-Decrement handler
+            downArrow_QualifierCount_DTA.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             downArrow_QualifierCount_DTA.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             downArrow_QualifierCount_DTA.mouseup( ( ->
                 downArrow_QualifierCount_DTA.attr('fill', arrowButtonColour_Default) # UX initative
                 qualifierCount_DTA.node.textContent = @_onClickDecrement_QualifierCount(qualifierCount_DTA)
                 @set('dtaQualifierCount', qualifierCount_DTA.node.textContent)
             ).bind(@))
+
+            # --- Box-And-Pole + Save-Button -----------------------------------
+            @set('_boxNpole_QualifierCountDTA_SvgObj', boxNpole_QualifierCount_DTA)
+            # Save-Button interactivity & event-handler
+            savebutton_QualifierCount_DTA.attr({ visibility: 'hidden' }) # Hide Button
+            savebutton_QualifierCount_DTA.hover(@_fadeSvgElement, @_UnfadeSvgElement)
+            savebutton_QualifierCount_DTA.click(( ->
+                @weatherAnalyticsSettings.downtrendanalyser.content[0].save().then( (->
+
+                    box = boxNpole_QualifierCount_DTA.select('#box_qualifier_count_dta')
+                    box.attr('stroke', @_boxAndpoleColour_Default)
+                    box.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                    pole = boxNpole_QualifierCount_DTA.select('#pole_qualifier_count_dta')
+                    pole.attr('stroke', @_boxAndpoleColour_Default)
+                    pole.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                    savebutton_QualifierCount_DTA.attr({ visibility: 'hidden' })
+
+                ).bind(@))
+            ).bind(@))
+            @set('_savebutton_QualifierCountDTA_SvgObj', savebutton_QualifierCount_DTA)
 
             # ---------------------------
             # --- Temperature Trigger ---
@@ -90,6 +130,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             upArrow_OnHighHumidity_TemperatureTrigger = f.select('#uparrow_onhighhumidity_temperaturetrigger')
             downArrow_OnHighHumidity_TemperatureTrigger = f.select('#downarrow_onhighhumidity_temperaturetrigger')
 
+            boxesNpole_TemperatureTrigger = f.select('#boxNpole_temperaturetrigger')
+            savebutton_TemperatureTrigger = f.select('#savebutton_temperaturetrigger')
+
             # Initialise digit & unit
             default_TemperatureTrigger.node.textContent = @defaultTemperatureTrigger
             unit_Default_TemperatureTrigger.node.textContent = @unitOfTemperatureTrigger
@@ -98,12 +141,14 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             unit_OnHighHumidity_TemperatureTrigger.node.textContent = @unitOfTemperatureTrigger
 
             # Digit-Increment handlers
+            upArrow_Default_TemperatureTrigger.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             upArrow_Default_TemperatureTrigger.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             upArrow_Default_TemperatureTrigger.mouseup( ( ->
                 upArrow_Default_TemperatureTrigger.attr('fill', arrowButtonColour_Default) # UX initative
                 @set('defaultTemperatureTrigger', @_onClickIncrement_DefaultTemperatureTrigger(default_TemperatureTrigger))
             ).bind(@))
 
+            upArrow_OnHighHumidity_TemperatureTrigger.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             upArrow_OnHighHumidity_TemperatureTrigger.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             upArrow_OnHighHumidity_TemperatureTrigger.mouseup( ( ->
                 upArrow_OnHighHumidity_TemperatureTrigger.attr('fill', arrowButtonColour_Default) # UX initative
@@ -111,17 +156,46 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             ).bind(@))
 
             # Digit-Decrement handlers
+            downArrow_Default_TemperatureTrigger.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             downArrow_Default_TemperatureTrigger.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             downArrow_Default_TemperatureTrigger.mouseup( ( ->
                 downArrow_Default_TemperatureTrigger.attr('fill', arrowButtonColour_Default) # UX initative
                 @set('defaultTemperatureTrigger', @_onClickDecrement_DefaultTemperatureTrigger(default_TemperatureTrigger))
             ).bind(@))
 
+            downArrow_OnHighHumidity_TemperatureTrigger.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             downArrow_OnHighHumidity_TemperatureTrigger.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             downArrow_OnHighHumidity_TemperatureTrigger.mouseup( ( ->
                 downArrow_OnHighHumidity_TemperatureTrigger.attr('fill', arrowButtonColour_Default) # UX initative
                 @set('onHighHumidityTemperatureTrigger', @_onClickDecrement_OnHighHumidityTemperatureTrigger(onHighHumidity_TemperatureTrigger))
             ).bind(@))
+
+            # --- Box-And-Pole + Save-Button -----------------------------------
+            @set('_boxNpole_TemperatureTrigger_SvgObj', boxesNpole_TemperatureTrigger)
+
+            # Save-Button interactivity & event-handler
+            savebutton_TemperatureTrigger.attr({ visibility: 'hidden' }) # Hide Button
+            savebutton_TemperatureTrigger.hover(@_fadeSvgElement, @_UnfadeSvgElement)
+            savebutton_TemperatureTrigger.click( (->
+              @weatherAnalyticsSettings.temperaturetrigger.content[0].save().then( (->
+
+                box = boxesNpole_TemperatureTrigger.select('#box_default_temperaturetrigger')
+                box.attr('stroke', @_boxAndpoleColour_Default)
+                box.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                box = boxesNpole_TemperatureTrigger.select('#box_onhighhumidity_temperaturetrigger')
+                box.attr('stroke', @_boxAndpoleColour_Default)
+                box.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                pole = boxesNpole_TemperatureTrigger.select('#pole_temperaturetrigger')
+                pole.attr('stroke', @_boxAndpoleColour_Default)
+                pole.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                savebutton_TemperatureTrigger.attr({ visibility: 'hidden' })
+
+              ).bind(@))
+            ).bind(@))
+            @set('_savebutton_TemperatureTrigger_SvgObj', savebutton_TemperatureTrigger)
 
             # --------------------------
             # --- Humidity Threshold ---
@@ -132,12 +206,16 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             unit_High_HumidityThershold = f.select('#unit_high_humiditythershold')
             upArrow_High_HumidityThershold = f.select('#uparrow_high_humiditythershold')
             downArrow_High_HumidityThershold = f.select('#downarrow_high_humiditythershold')
+            boxNpole_High_HumidityThershold = f.select('#boxNpole_high_humiditythershold')
+            savebutton_High_HumidityThershold = f.select('#savebutton_high_humiditythershold')
 
             low_HumidityThershold = f.select('#low_humiditythershold')
             @set('_low_HumidityThershold_SvgObj', low_HumidityThershold)
             unit_Low_HumidityThershold = f.select('#unit_low_humiditythershold')
             upArrow_Low_HumidityThershold = f.select('#uparrow_low_humiditythershold')
             downArrow_Low_HumidityThershold = f.select('#downarrow_low_humiditythershold')
+            boxNpole_Low_HumidityThershold = f.select('#boxNpole_low_humiditythershold')
+            savebutton_Low_HumidityThershold = f.select('#savebutton_low_humiditythershold')
 
             # Initialise digit & unit
             high_HumidityThershold.node.textContent = @highHumidityThreshold
@@ -150,27 +228,70 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             upArrow_High_HumidityThershold.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             upArrow_High_HumidityThershold.mouseup( ( ->
                 upArrow_High_HumidityThershold.attr('fill', arrowButtonColour_Default) # UX initative
-                @set('high_HumidityThershold', @_onClickIncrement_HighHumidityThreshold(high_HumidityThershold))
+                @set('highHumidityThreshold', @_onClickIncrement_HighHumidityThreshold(high_HumidityThershold))
             ).bind(@))
 
             upArrow_Low_HumidityThershold.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             upArrow_Low_HumidityThershold.mouseup( ( ->
                 upArrow_Low_HumidityThershold.attr('fill', arrowButtonColour_Default) # UX initative
-                @set('low_HumidityThershold', @_onClickIncrement_LowHumidityThreshold(low_HumidityThershold))
+                @set('lowHumidityThreshold', @_onClickIncrement_LowHumidityThreshold(low_HumidityThershold))
             ).bind(@))
 
             # Digit-Decrement handlers
             downArrow_High_HumidityThershold.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             downArrow_High_HumidityThershold.mouseup( ( ->
                 downArrow_High_HumidityThershold.attr('fill', arrowButtonColour_Default) # UX initative
-                @set('high_HumidityThershold', @_onClickDecrement_HighHumidityThreshold(high_HumidityThershold))
+                @set('highHumidityThreshold', @_onClickDecrement_HighHumidityThreshold(high_HumidityThershold))
             ).bind(@))
 
             downArrow_Low_HumidityThershold.mousedown(@_fillSvgElementWithBlackColour) # UX initative
             downArrow_Low_HumidityThershold.mouseup( ( ->
                 downArrow_Low_HumidityThershold.attr('fill', arrowButtonColour_Default) # UX initative
-                @set('low_HumidityThershold', @_onClickDecrement_LowHumidityThreshold(low_HumidityThershold))
+                @set('lowHumidityThreshold', @_onClickDecrement_LowHumidityThreshold(low_HumidityThershold))
             ).bind(@))
+
+            # --- Box-And-Pole + Save-Button -----------------------------------
+            @set('_boxNpole_High_HumidityThershold_SvgObj', boxNpole_High_HumidityThershold)
+            @set('_boxNpole_Low_HumidityThershold_SvgObj', boxNpole_Low_HumidityThershold)
+
+            # Save-Button interactivity & event-handler
+            savebutton_High_HumidityThershold.attr({ visibility: 'hidden' }) # Hide Button
+            savebutton_High_HumidityThershold.hover(@_fadeSvgElement, @_UnfadeSvgElement)
+            savebutton_High_HumidityThershold.click( (->
+              @weatherAnalyticsSettings.humiditythreshold.content[0].save().then( (->
+
+                box = boxNpole_High_HumidityThershold.select('#box_high_humiditythershold')
+                box.attr('stroke', @_boxAndpoleColour_Default)
+                box.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                pole = boxNpole_High_HumidityThershold.select('#pole_high_humiditythershold')
+                pole.attr('stroke', @_boxAndpoleColour_Default)
+                pole.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                savebutton_High_HumidityThershold.attr({ visibility: 'hidden' })
+
+              ).bind(@))
+            ).bind(@))
+            @set('_savebutton_High_HumidityThershold_SvgObj', savebutton_High_HumidityThershold)
+
+            savebutton_Low_HumidityThershold.attr({ visibility: 'hidden' }) # Hide Button
+            savebutton_Low_HumidityThershold.hover(@_fadeSvgElement, @_UnfadeSvgElement)
+            savebutton_Low_HumidityThershold.click( (->
+              @weatherAnalyticsSettings.humiditythreshold.content[0].save().then( (->
+
+                box = boxNpole_Low_HumidityThershold.select('#box_low_humiditythershold')
+                box.attr('stroke', @_boxAndpoleColour_Default)
+                box.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                pole = boxNpole_Low_HumidityThershold.select('#pole_low_humiditythershold')
+                pole.attr('stroke', @_boxAndpoleColour_Default)
+                pole.attr('opacity', @_boxAndpoleOpacity_Default)
+
+                savebutton_Low_HumidityThershold.attr({ visibility: 'hidden' })
+
+              ).bind(@))
+            ).bind(@))
+            @set('_savebutton_Low_HumidityThershold_SvgObj', savebutton_Low_HumidityThershold)
 
             s.append(f)
 
@@ -183,7 +304,7 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
         draw = Snap('#weather-analytics-settings-wrapper')
         @set('draw', draw)
 
-    _extractWeatherAnalyticsSettings: ->
+    _extractWeatherAnalyticsSettingsDataset: ->
         # --- Down-Trend Analyser details ---
         @set('dtaQualifierCount', @weatherAnalyticsSettings.downtrendanalyser.content[0].record.get('qualifierCount'))
         @set('dtaUnitOfQualifierCount', @weatherAnalyticsSettings.downtrendanalyser.content[0].record.get('unit'))
@@ -199,6 +320,10 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
         @set('_extractedAllWeatherAnalyticsSettings', true)
 
     _fillSvgElementWithBlackColour: (event) -> @attr({ fill: 'black' })
+
+    _fadeSvgElement: (event) -> @attr({ opacity: 0.9 })
+
+    _UnfadeSvgElement: (event) -> @attr({ opacity: 1 })
 
     _onClickIncrement_QualifierCount: (svgDigitElement) ->
         digit = parseInt(svgDigitElement.node.textContent, 10) + 1
@@ -234,11 +359,11 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
 
     _onClickIncrement_LowHumidityThreshold: (svgDigitElement) ->
         digit = parseInt(svgDigitElement.node.textContent, 10) + 1
-        if digit > 70 then 0 else digit
+        if digit > 34 then 0 else digit
 
     _onClickDecrement_LowHumidityThreshold: (svgDigitElement) ->
         digit = parseInt(svgDigitElement.node.textContent, 10) - 1
-        if digit < 0 then 70 else digit
+        if digit < 0 then 34 else digit
 
     # -------------------------
     # --- Declare Observers ---
@@ -246,48 +371,97 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
     onDTAQualifierCountChanged: ( ->
         if @_extractedAllWeatherAnalyticsSettings
             @weatherAnalyticsSettings.downtrendanalyser.content[0].record.set('qualifierCount', @dtaQualifierCount)
-            @weatherAnalyticsSettings.downtrendanalyser.content[0].save()
+
+            # --- Box-And-Pole ---
+            box = @_boxNpole_QualifierCountDTA_SvgObj.select('#box_qualifier_count_dta')
+            pole = @_boxNpole_QualifierCountDTA_SvgObj.select('#pole_qualifier_count_dta')
+            box.attr('stroke', @_boxAndpoleColour_OnChange)
+            box.attr('opacity', @_boxAndpoleOpacity_OnChange)
+            pole.attr('stroke', @_boxAndpoleColour_OnChange)
+            pole.attr('opacity', @_boxAndpoleOpacity_OnChange)
+
+            # --- Save Button ---
+            @_savebutton_QualifierCountDTA_SvgObj.attr({ visibility:'visible' })
+            #@weatherAnalyticsSettings.downtrendanalyser.content[0].save()
     ).observes('dtaQualifierCount')
 
     onDefaultTemperatureTriggerChanged: ( ->
         if @_extractedAllWeatherAnalyticsSettings
             @_default_TemperatureTrigger_SvgObj.node.textContent = @defaultTemperatureTrigger
             @weatherAnalyticsSettings.temperaturetrigger.content[0].record.set('default', @defaultTemperatureTrigger)
-            @weatherAnalyticsSettings.temperaturetrigger.content[0].save().then( (->
-                if parseInt(@defaultTemperatureTrigger, 10) > parseInt(@onHighHumidityTemperatureTrigger, 10)
-                    @set('onHighHumidityTemperatureTrigger', @defaultTemperatureTrigger)
-            ).bind(@))
+
+            # --- Box-And-Pole ---
+            box = @_boxNpole_TemperatureTrigger_SvgObj.select('#box_default_temperaturetrigger')
+            pole = @_boxNpole_TemperatureTrigger_SvgObj.select('#pole_temperaturetrigger')
+            box.attr('stroke', @_boxAndpoleColour_OnChange)
+            box.attr('opacity', @_boxAndpoleOpacity_OnChange)
+            pole.attr('stroke', @_boxAndpoleColour_OnChange)
+            pole.attr('opacity', @_boxAndpoleOpacity_OnChange)
+
+            # --- Save Button ---
+            @_savebutton_TemperatureTrigger_SvgObj.attr({ visibility:'visible' })
+
+            # --- Sanity Checking & Imposed Correction between Default/High-Humidity Temperature Triggers ---
+            if parseInt(@defaultTemperatureTrigger, 10) > parseInt(@onHighHumidityTemperatureTrigger, 10)
+                @set('onHighHumidityTemperatureTrigger', @defaultTemperatureTrigger)
+
     ).observes('defaultTemperatureTrigger')
 
     onHighHumidityTemperatureTriggerChanged: ( ->
         if @_extractedAllWeatherAnalyticsSettings
             @_onHighHumidity_TemperatureTrigger_SvgObj.node.textContent = @onHighHumidityTemperatureTrigger
             @weatherAnalyticsSettings.temperaturetrigger.content[0].record.set('onHighHumidity', @onHighHumidityTemperatureTrigger)
-            @weatherAnalyticsSettings.temperaturetrigger.content[0].save().then( (->
-                if parseInt(@onHighHumidityTemperatureTrigger, 10) < parseInt(@defaultTemperatureTrigger, 10)
-                    @set('defaultTemperatureTrigger', @onHighHumidityTemperatureTrigger)
-            ).bind(@))
+
+            # --- Box-And-Pole ---
+            box = @_boxNpole_TemperatureTrigger_SvgObj.select('#box_onhighhumidity_temperaturetrigger')
+            pole = @_boxNpole_TemperatureTrigger_SvgObj.select('#pole_temperaturetrigger')
+            box.attr('stroke', @_boxAndpoleColour_OnChange)
+            box.attr('opacity', @_boxAndpoleOpacity_OnChange)
+            pole.attr('stroke', @_boxAndpoleColour_OnChange)
+            pole.attr('opacity', @_boxAndpoleOpacity_OnChange)
+
+            # --- Save Button ---
+            @_savebutton_TemperatureTrigger_SvgObj.attr({ visibility:'visible' })
+
+            # --- Sanity Checking & Imposed Correction between Default/High-Humidity Temperature Triggers ---
+            if parseInt(@onHighHumidityTemperatureTrigger, 10) < parseInt(@defaultTemperatureTrigger, 10)
+                @set('defaultTemperatureTrigger', @onHighHumidityTemperatureTrigger)
+
     ).observes('onHighHumidityTemperatureTrigger')
 
     onHighHumidityThresholdChanged: ( ->
         if @_extractedAllWeatherAnalyticsSettings
-            @_high_HumidityThershold_SvgObj.node.textContent = @high_HumidityThershold
-            @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('high', @high_HumidityThershold)
-            @weatherAnalyticsSettings.humiditythreshold.content[0].save().then( (->
-                if parseInt(@high_HumidityThershold, 10) < parseInt(@low_HumidityThershold, 10)
-                    @set('low_HumidityThershold', @high_HumidityThershold)
-            ).bind(@))
-    ).observes('high_HumidityThershold')
+          @_high_HumidityThershold_SvgObj.node.textContent = @highHumidityThreshold
+          @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('high', @highHumidityThreshold)
+
+          # --- Box-And-Pole ---
+          box = @_boxNpole_High_HumidityThershold_SvgObj.select('#box_high_humiditythershold')
+          pole = @_boxNpole_High_HumidityThershold_SvgObj.select('#pole_high_humiditythershold')
+          box.attr('stroke', @_boxAndpoleColour_OnChange)
+          box.attr('opacity', @_boxAndpoleOpacity_OnChange)
+          pole.attr('stroke', @_boxAndpoleColour_OnChange)
+          pole.attr('opacity', @_boxAndpoleOpacity_OnChange)
+
+          # --- Save Button ---
+          @_savebutton_High_HumidityThershold_SvgObj.attr({ visibility:'visible' })
+    ).observes('highHumidityThreshold')
 
     onLowHumidityThresholdChanged: ( ->
         if @_extractedAllWeatherAnalyticsSettings
-            @_low_HumidityThershold_SvgObj.node.textContent = @low_HumidityThershold
-            @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('low', @low_HumidityThershold)
-            @weatherAnalyticsSettings.humiditythreshold.content[0].save().then( (->
-                if parseInt(@low_HumidityThershold, 10) > parseInt(@high_HumidityThershold, 10)
-                    @set('high_HumidityThershold', @low_HumidityThershold)
-            ).bind(@))
-    ).observes('low_HumidityThershold')
+            @_low_HumidityThershold_SvgObj.node.textContent = @lowHumidityThreshold
+            @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('low', @lowHumidityThreshold)
+
+            # --- Box-And-Pole ---
+            box = @_boxNpole_Low_HumidityThershold_SvgObj.select('#box_low_humiditythershold')
+            pole = @_boxNpole_Low_HumidityThershold_SvgObj.select('#pole_low_humiditythershold')
+            box.attr('stroke', @_boxAndpoleColour_OnChange)
+            box.attr('opacity', @_boxAndpoleOpacity_OnChange)
+            pole.attr('stroke', @_boxAndpoleColour_OnChange)
+            pole.attr('opacity', @_boxAndpoleOpacity_OnChange)
+
+            # --- Save Button ---
+            @_savebutton_Low_HumidityThershold_SvgObj.attr({ visibility:'visible' })
+    ).observes('lowHumidityThreshold')
 )
 
 `export default WeatherAnalyticsSettingsComponent`
