@@ -4,9 +4,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
 
     attributeBindings: ['weatherAnalyticsSettings']
 
-    # ----------------
-    # Declare: Globals
-    # ----------------
+    # ------------------------
+    # --- Declare: Globals ---
+    # ------------------------
     _extractedAllWeatherAnalyticsSettings: false
 
     _settingsBox_Line_DefaultColour: '#808080'
@@ -40,9 +40,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
     _lowHumidityThreshold: null
     _unitOfHumidityThreshold: null
 
-    # -------------------------------------
-    # Declare: Component Specific Functions
-    # -------------------------------------
+    # ---------------------------------------------
+    # --- Declare: Component Specific Functions ---
+    # ---------------------------------------------
     didInsertElement: ->
 
         # Create snap.svg context
@@ -59,9 +59,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
 
             arrowButtonColour_Default = '#808080'
 
-            # ---------------------------
-            # --- Down-Trend Analyser ---
-            # ---------------------------
+            # -------------------
+            # Down-Trend Analyser
+            # -------------------
             # Get all related svg objects
             qualifierCount_DTA = f.select('#qualifier_count_dta')
             unit_QualifierCount_DTA = f.select('#unit_qualifier_count_dta')
@@ -108,9 +108,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             ).bind(@))
             @set('_savebutton_QualifierCountDTA_SvgObj', savebutton_QualifierCount_DTA)
 
-            # ---------------------------
-            # --- Temperature Trigger ---
-            # ---------------------------
+            # -------------------
+            # Temperature Trigger
+            # -------------------
             # Get all related svg objects
             default_TemperatureTrigger = f.select('#default_temperaturetrigger')
             @set('_default_TemperatureTrigger_SvgObj', default_TemperatureTrigger)
@@ -183,9 +183,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
             ).bind(@))
             @set('_savebutton_TemperatureTrigger_SvgObj', savebutton_TemperatureTrigger)
 
-            # --------------------------
-            # --- Humidity Threshold ---
-            # --------------------------
+            # ------------------
+            # Humidity Threshold
+            # ------------------
             # Get all related svg objects
             high_HumidityThershold = f.select('#high_humiditythershold')
             @set('_high_HumidityThershold_SvgObj', high_HumidityThershold)
@@ -271,9 +271,9 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
 
         ).bind(@))
 
-    # ------------------------
-    # Declare: Local Functions
-    # ------------------------
+    # --------------------------------
+    # --- Declare: Local Functions ---
+    # --------------------------------
     _snapsvgInit: ->
       draw = Snap('#weather-analytics-settings-wrapper')
       @set('draw', draw)
