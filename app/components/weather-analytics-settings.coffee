@@ -48,10 +48,10 @@ WeatherAnalyticsSettingsComponent = Ember.Component.extend(
         # Create snap.svg context
         @_snapsvgInit()
 
-        # Get handle to Clock svg
+        # Get handle to Weather svg
         s = @get('draw')
 
-        # Manipulate Clock svg objects
+        # Manipulate Weather svg objects
         Snap.load('assets/weather.svg', ((f) ->
 
             # Extract data from model
