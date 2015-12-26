@@ -1,3 +1,59 @@
-{{weather-analytics-settings weatherAnalyticsSettings=model}}
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+
+      <div class="panel-heading" align=center>
+        <h1>Weather Analytics Settings</h1>
+        {{weather-settings-header}}
+      </div>
+
+      <div class="panel-body">
+
+        <div class="col-md-12">
+          <div class="panel panel-default">
+
+            <div class="panel-heading">
+              <h2>Down-Trend Analyser</h2>
+            </div>
+
+            <div class="panel-body">
+              {{downtrend-settings weatherAnalyticsSettings=model}}
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+
+            <div class="panel-heading">
+              <h2>Temperature Trigger</h2>
+            </div>
+
+            <div class="panel-body">
+              {{temperature-trigger-settings weatherAnalyticsSettings=model}}
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+
+            <div class="panel-heading">
+              <h2>Humidity Thershold</h2>
+            </div>
+
+            <div class="panel-body">
+              {{humidity-threshold-settings weatherAnalyticsSettings=model}}
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 {{outlet}}

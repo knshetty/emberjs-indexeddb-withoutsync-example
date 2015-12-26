@@ -40,7 +40,10 @@ module.exports = function(defaults) {
     // --- SVG assests ---
       var svgAssests = pickFiles('app/svgs', {
             srcDir: '/',
-            files: ['weather.svg'],
+            files: ['sun.svg',
+                    'downtrend_settings.svg',
+                    'temperature_trigger_settings.svg',
+                    'humidity_threshold_settings.svg'],
             destDir: '/assets'
       });
 
