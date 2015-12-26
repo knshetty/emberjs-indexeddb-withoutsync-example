@@ -105,6 +105,7 @@ HumidityThresholdSettingsComponent = Ember.Component.extend(
             savebutton_High_HumidityThershold.attr({ visibility: 'hidden' }) # Hide Button
             savebutton_High_HumidityThershold.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             savebutton_High_HumidityThershold.click( (->
+              @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('high', @_highHumidityThreshold)
               @weatherAnalyticsSettings.humiditythreshold.content[0].save().then( (->
                 box = boxNpole_High_HumidityThershold.select('#box_high_humiditythershold')
                 @_setColourToDefault_SettingsBox(box)
@@ -118,6 +119,7 @@ HumidityThresholdSettingsComponent = Ember.Component.extend(
             savebutton_Low_HumidityThershold.attr({ visibility: 'hidden' }) # Hide Button
             savebutton_Low_HumidityThershold.hover(@_fadeSvgElement, @_UnfadeSvgElement)
             savebutton_Low_HumidityThershold.click( (->
+              @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('low', @_lowHumidityThreshold)
               @weatherAnalyticsSettings.humiditythreshold.content[0].save().then( (->
                 box = boxNpole_Low_HumidityThershold.select('#box_low_humiditythershold')
                 @_setColourToDefault_SettingsBox(box)
@@ -184,7 +186,6 @@ HumidityThresholdSettingsComponent = Ember.Component.extend(
     onHighHumidityThresholdChanged: ( ->
         if @_isExtracted_HumidityThresholdSettings
           @_high_HumidityThershold_SvgObj.node.textContent = @_highHumidityThreshold
-          @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('high', @_highHumidityThreshold)
 
           # --- Box-And-Pole ---
           box = @_boxNpole_High_HumidityThershold_SvgObj.select('#box_high_humiditythershold')
@@ -199,7 +200,6 @@ HumidityThresholdSettingsComponent = Ember.Component.extend(
     onLowHumidityThresholdChanged: ( ->
         if @_isExtracted_HumidityThresholdSettings
             @_low_HumidityThershold_SvgObj.node.textContent = @_lowHumidityThreshold
-            @weatherAnalyticsSettings.humiditythreshold.content[0].record.set('low', @_lowHumidityThreshold)
 
             # --- Box-And-Pole ---
             box = @_boxNpole_Low_HumidityThershold_SvgObj.select('#box_low_humiditythershold')
